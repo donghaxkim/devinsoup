@@ -57,7 +57,7 @@ export default function Book() {
         phone: formData.phone,
         date: selectedDate,
         time: selectedTime,
-        barber_email: 'barber.devv@gmail.com'
+        barber_email: 'barber.devv@gmail.com' //CHANGE LATER
       };
 
       const { data, error } = await supabase
