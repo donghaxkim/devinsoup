@@ -1,6 +1,8 @@
+import React from 'react';
 import { MapContainer, TileLayer, Circle, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import './LeafletMap.css';
+import 'leaflet/dist/leaflet.css';
 
 // Blue dot icon
 const blueIcon = new L.Icon({
