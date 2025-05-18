@@ -1,11 +1,11 @@
 import React from 'react';
 import { FaMapPin, FaArrowRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import Gallery from './Gallery';
 
 const Hero = () => {
   return (
     <div className="relative min-h-screen">
-      <div id="hero"> </div>
       {/* Video Background with Overlay */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <video
@@ -13,7 +13,8 @@ const Hero = () => {
           loop
           muted
           playsInline
-          className="absolute w-full h-full object-cover"
+          className="absolute w-full h-full object-cover scale-70"
+          style={{ objectPosition: 'center 66%' }}
         >
           <source src="/dongha.mp4" type="video/mp4" />
         </video>
@@ -37,6 +38,14 @@ const Hero = () => {
           Book Your First Appointment
           <FaArrowRight className="text-base mt-[1px] ml-2" />
         </Link>
+      </div>
+
+      {/* Gallery Preview Section */}
+      <div className="relative z-10 bg-white py-12">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">Gallery</h2>
+          <Gallery isPreview={true} />
+        </div>
       </div>
     </div>
   );

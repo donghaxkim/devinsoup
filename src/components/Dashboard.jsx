@@ -1,176 +1,131 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, where, orderBy, onSnapshot, Timestamp } from 'firebase/firestore';
-import { db } from '../firebase';
+import { supabase } from '../supabaseClient';
 
 export default function Dashboard() {
   const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [filter, setFilter] = useState('upcoming');
-
-
-  const barberEmail = 'donghaxkim@gmail.com';
+  const [filter, setFilter] = useState('all');
+  const barberEmail = 'barber.devv@gmail.com';
 
   useEffect(() => {
-    const now = Timestamp.now();
-    
-    const q = query(
-      collection(db, 'bookings'),
-      where('barberEmail', '==', barberEmail),
-      where('date', filter === 'upcoming' ? '>=' : '<', now),
-      orderBy('date', 'asc'),
-      orderBy('time', 'asc')
-    );
+    const fetchBookings = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('bookings')
+          .select('*')
+          .eq('barber_email', barberEmail)
+          .order('date', { ascending: true });
 
-    const unsubscribe = onSnapshot(q, 
-      (snapshot) => {
-        const bookingList = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          date: doc.data().date.toDate()
-        }));
-        setBookings(bookingList);
-        setLoading(false);
-      },
-      (error) => {
+        if (error) throw error;
+        setBookings(data || []);
+      } catch (error) {
         console.error('Error fetching bookings:', error);
-        setError('Failed to load bookings');
-        setLoading(false);
       }
-    );
+    };
 
-    return () => unsubscribe();
-  }, [barberEmail, filter]);
+    fetchBookings();
 
-  const formatDate = (date) => {
-    return new Intl.DateTimeFormat('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }).format(date);
-  };
+    // Set up real-time subscription
+    const subscription = supabase
+      .channel('bookings_changes')
+      .on('postgres_changes', 
+        { 
+          event: '*', 
+          schema: 'public', 
+          table: 'bookings',
+          filter: `barber_email=eq.${barberEmail}`
+        }, 
+        (payload) => {
+          console.log('Change received!', payload);
+          fetchBookings(); // Refresh the bookings when changes occur
+        }
+      )
+      .subscribe();
 
-  const formatTime = (time) => {
-    return time; // Already formatted in 24-hour format
-  };
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [barberEmail]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading bookings...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50 py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center text-red-600">
-            <p>{error}</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const filteredBookings = bookings.filter(booking => {
+    if (filter === 'all') return true;
+    if (filter === 'today') {
+      const today = new Date().toISOString().split('T')[0];
+      return booking.date === today;
+    }
+    if (filter === 'upcoming') {
+      const today = new Date().toISOString().split('T')[0];
+      return booking.date > today;
+    }
+    return true;
+  });
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Barber Dashboard</h1>
-          <div className="flex gap-4">
-            <button
-              onClick={() => setFilter('upcoming')}
-              className={`px-4 py-2 rounded-md ${
-                filter === 'upcoming'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              Upcoming
-            </button>
-            <button
-              onClick={() => setFilter('past')}
-              className={`px-4 py-2 rounded-md ${
-                filter === 'past'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              Past
-            </button>
-          </div>
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Dashboard</h1>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setFilter('all')}
+            className={`px-4 py-2 rounded ${
+              filter === 'all'
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+            }`}
+          >
+            All
+          </button>
+          <button
+            onClick={() => setFilter('today')}
+            className={`px-4 py-2 rounded ${
+              filter === 'today'
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+            }`}
+          >
+            Today
+          </button>
+          <button
+            onClick={() => setFilter('upcoming')}
+            className={`px-4 py-2 rounded ${
+              filter === 'upcoming'
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+            }`}
+          >
+            Upcoming
+          </button>
         </div>
+      </div>
 
-        <div className="bg-white shadow rounded-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Date & Time
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Customer
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Contact
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {bookings.length === 0 ? (
-                  <tr>
-                    <td colSpan="4" className="px-6 py-4 text-center text-gray-500">
-                      No {filter} bookings found
-                    </td>
-                  </tr>
-                ) : (
-                  bookings.map((booking) => (
-                    <tr key={booking.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
-                          {formatDate(booking.date)}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          {formatTime(booking.time)}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
-                          {booking.name}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{booking.email}</div>
-                        <div className="text-sm text-gray-500">{booking.phone}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          booking.status === 'confirmed'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-yellow-100 text-yellow-800'
-                        }`}>
-                          {booking.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+      <div className="grid gap-4">
+        {filteredBookings.map((booking) => (
+          <div
+            key={booking.id}
+            className="bg-white dark:bg-gray-800 rounded-lg shadow p-4"
+          >
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                  {booking.customer_name}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {new Date(booking.date).toLocaleDateString()} at {booking.time}
+                </p>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {booking.service}
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-gray-600 dark:text-gray-300">
+                  {booking.customer_email}
+                </p>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {booking.customer_phone}
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );

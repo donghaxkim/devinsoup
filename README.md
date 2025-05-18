@@ -1,30 +1,30 @@
-# DevinSoup Barber Shop
+# Devin Soup - Barber Shop Website
 
-A modern web application for Devin Soup's barber shop, featuring online booking, real-time appointment management, and automated email notifications.
+A modern, responsive website for Devin Soup's barber shop, built with React and Supabase.
 
 ## Features
 
-- Online booking system with real-time availability
-- Barber dashboard for appointment management
-- Email notifications for bookings and reminders
-- Responsive design for all devices
-- Google Maps integration for location
-- Real-time updates using Firebase
+- Online booking system
+- Real-time updates using Supabase
+- Responsive design
+- Dark mode support
+- Contact form with email notifications
+- Interactive map integration
 
 ## Tech Stack
 
-- React.js
-- Firebase (Authentication, Firestore, Functions)
-- Tailwind CSS
-- Nodemailer for email notifications
+- React
+- Supabase (Database, Authentication, Real-time)
+- EmailJS (Email notifications)
 - Google Maps API
+- Tailwind CSS
 
-## Getting Started
+## Setup Instructions
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/DevinSoupBarber.git
-cd DevinSoupBarber
+git clone https://github.com/donghaxkim/devinsoup.git
+cd devinsoup
 ```
 
 2. Install dependencies:
@@ -32,48 +32,38 @@ cd DevinSoupBarber
 npm install
 ```
 
-3. Set up Firebase:
-   - Create a new Firebase project
-   - Enable Authentication, Firestore, and Functions
-   - Add your Firebase configuration to `src/firebase.js`
-   - Set up Firebase Functions for email notifications
+3. Set up Supabase:
+- Create a new Supabase project
+- Create the necessary tables (bookings, etc.)
+- Add your Supabase configuration to `src/supabaseClient.js`
 
 4. Set up environment variables:
-   - Create a `.env` file in the root directory
-   - Add your Google Maps API key and other necessary environment variables
+Create a `.env` file in the root directory with the following variables:
+```
+REACT_APP_SUPABASE_URL=your_supabase_url
+REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
+REACT_APP_EMAILJS_PUBLIC_KEY=your_emailjs_public_key
+REACT_APP_EMAILJS_TEMPLATE_ID=your_emailjs_template_id
+REACT_APP_EMAILJS_SERVICE_ID=your_emailjs_service_id
+REACT_APP_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+REACT_APP_BARBER_EMAIL=barber.devv@gmail.com
+```
 
 5. Start the development server:
 ```bash
 npm start
 ```
 
-## Firebase Functions Setup
+## Deployment
 
-1. Navigate to the functions directory:
-```bash
-cd functions
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Update the email configuration in `functions/index.js`:
-   - Replace `your-email@gmail.com` with your Gmail address
-   - Replace `your-app-password` with your Gmail app password
-
-4. Deploy Firebase Functions:
-```bash
-firebase deploy --only functions
-```
+The application can be deployed to any static hosting service (Vercel, Netlify, etc.).
 
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
 ## License
