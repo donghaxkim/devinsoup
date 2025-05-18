@@ -37,3 +37,6 @@ firebase-debug.*.log
 # Functions
 /functions/node_modules
 /functions/.env
+
+# ignore environment variable files
+.env
