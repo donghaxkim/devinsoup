@@ -1,0 +1,10 @@
+.leaflet-z-fix,
+.leaflet-z-fix .leaflet-pane,
+.leaflet-z-fix .leaflet-map-pane,
+.leaflet-z-fix .leaflet-tile-pane,
+.leaflet-z-fix .leaflet-overlay-pane,
+.leaflet-z-fix .leaflet-shadow-pane,
+.leaflet-z-fix .leaflet-marker-pane,
+.leaflet-z-fix .leaflet-popup-pane {
+  z-index: 0 !important;
+} 

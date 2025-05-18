@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 const Hero = () => {
   return (
     <div className="relative min-h-screen">
+      <div id="hero"> </div>
       {/* Video Background with Overlay */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <video

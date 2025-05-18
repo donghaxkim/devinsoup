@@ -8,9 +8,8 @@ export default function Dashboard() {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('upcoming');
 
-  // For demo purposes, we'll use a hardcoded barber email
-  // In production, this would come from Firebase Auth
-  const barberEmail = 'devin@soupbarber.com';
+
+  const barberEmail = 'donghaxkim@gmail.com';
 
   useEffect(() => {
     const now = Timestamp.now();

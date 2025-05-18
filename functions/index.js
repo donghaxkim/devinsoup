@@ -8,8 +8,8 @@ admin.initializeApp();
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'your-email@gmail.com', // Replace with your Gmail
-    pass: 'your-app-password' // Replace with your Gmail app password
+    user: 'donghaxkim@gmail.com', // Replace with your Gmail
+    pass: 'drbq alza jaln oycy' // Replace with your Gmail app password
   }
 });
 
@@ -31,7 +31,7 @@ exports.sendBookingEmails = functions.firestore
 
     // Email to customer
     const customerMailOptions = {
-      from: 'Devin Soup <your-email@gmail.com>',
+      from: 'Devin Soup <donghaxkim@gmail.com>',
       to: booking.email,
       subject: 'Booking Confirmation - Devin Soup',
       html: `
@@ -47,7 +47,7 @@ exports.sendBookingEmails = functions.firestore
 
     // Email to barber
     const barberMailOptions = {
-      from: 'Booking System <your-email@gmail.com>',
+      from: 'Booking System <donghaxkim@gmail.com>',
       to: booking.barberEmail,
       subject: 'New Booking Notification',
       html: `
@@ -98,7 +98,7 @@ exports.sendReminderEmails = functions.pubsub
       // Reminder to customer
       emails.push(
         transporter.sendMail({
-          from: 'Devin Soup <your-email@gmail.com>',
+          from: 'Devin Soup <donghaxkim@gmail.com>',
           to: booking.email,
           subject: 'Appointment Reminder - Devin Soup',
           html: `
@@ -116,7 +116,7 @@ exports.sendReminderEmails = functions.pubsub
       // Reminder to barber
       emails.push(
         transporter.sendMail({
-          from: 'Booking System <your-email@gmail.com>',
+          from: 'Booking System <donghaxkim@gmail.com>',
           to: booking.barberEmail,
           subject: 'Appointment Reminder',
           html: `
