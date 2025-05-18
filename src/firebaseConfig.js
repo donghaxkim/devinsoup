@@ -2,12 +2,12 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA0rcr-Mrg390uQn8Z4a1YASDLeF3ooiSw",
-  authDomain: "devinsoup-adc5d.firebaseapp.com",
-  projectId: "devinsoup-adc5d",
-  storageBucket: "devinsoup-adc5d.firebasestorage.app",
-  messagingSenderId: "312712607794",
-  appId: "1:312712607794:web:4ee3eb8d68ca6ce81c642b"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);
