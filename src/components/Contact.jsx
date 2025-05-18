@@ -54,7 +54,7 @@ export default function ContactSection() {
                 <div className="bg-gray-200 dark:bg-gray-800 p-3 rounded-full">
                   <Phone size={22} className="text-black dark:text-white" />
                 </div>
-                <span className="text-lg">(416) 555-1234</span>
+                <span className="text-lg">(647) 570-9649</span>
               </a>
               <a href="https://www.instagram.com/barber.dev1n/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 text-black dark:text-white hover:opacity-80 transition-opacity">
                 <div className="bg-gray-200 dark:bg-gray-800 p-3 rounded-full">

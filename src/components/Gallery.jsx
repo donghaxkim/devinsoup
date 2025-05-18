@@ -26,7 +26,6 @@ export default function Gallery({ isPreview = false }) {
   const gapPx = 16;
 
   return (
-
     <div
       className="w-full"
       style={{
@@ -35,6 +34,15 @@ export default function Gallery({ isPreview = false }) {
         paddingTop: '2px',
       }}
     >
+      {!isPreview && (
+        <h2
+          className="text-4xl font-semibold mb-8 text-gray-800 text-center"
+          style={{ paddingTop: '80px' }}
+        >
+          Our Work
+        </h2>
+      )}
+
       <div
         style={{
           display: 'grid',
@@ -70,10 +78,12 @@ export default function Gallery({ isPreview = false }) {
           </div>
         ))}
       </div>
+
       {isPreview && (
         <div className="text-center mt-6">
           <Link
             to="/gallery"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             View More
