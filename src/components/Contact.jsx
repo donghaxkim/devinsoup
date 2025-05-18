@@ -39,7 +39,7 @@ export default function ContactSection() {
                 <LeafletMap />
               </div>
               <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                Located at Yonge Street & 19th Avenue (3km service radius)
+                Located at Yonge Street & 19th Avenue (Exact location will be provided after booking)
               </p>
             </div>
             

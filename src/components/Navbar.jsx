@@ -69,7 +69,24 @@ export default function Navbar() {
           {/* Group 1: Gallery and Contact */}
           <div className="flex gap-x-6 items-center">
             <NavLink to="/gallery" scrolled={scrolled} onClick={handleNavClick}>Gallery</NavLink>
-            <NavLink href="#contact" scrolled={scrolled}>Contact</NavLink>
+            <button
+              className={`font-body font-medium transition-colors ${scrolled ? 'text-gray-100 hover:text-blue-400' : 'text-white hover:text-blue-300'}`}
+              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+              onClick={() => {
+                if (location.pathname !== '/') {
+                  navigate('/');
+                  setTimeout(() => {
+                    const el = document.getElementById('contact');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }, 100);
+                } else {
+                  const el = document.getElementById('contact');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+            >
+              Contact
+            </button>
           </div>
 
           {/* Group 2: Book and Signup */}
@@ -225,9 +242,24 @@ function MobileMenu({ scrolled, onClick, user }) {
           >
             Gallery
           </Link>
-          <a href="#contact" className={`block py-2 mt-4 px-4 font-body font-medium ${scrolled ? 'text-gray-100' : 'text-white'}`}>
+          <button
+            className={`block py-2 mt-4 px-4 font-body font-medium ${scrolled ? 'text-gray-100' : 'text-white'}`}
+            style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', width: '100%', textAlign: 'left' }}
+            onClick={() => {
+              if (window.location.pathname !== '/') {
+                window.location.href = '/';
+                setTimeout(() => {
+                  const el = document.getElementById('contact');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              } else {
+                const el = document.getElementById('contact');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+          >
             Contact
-          </a>
+          </button>
         </div>
 
         {/* Group 2: Book and Signup */}

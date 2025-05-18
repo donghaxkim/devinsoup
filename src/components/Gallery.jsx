@@ -36,7 +36,7 @@ export default function Gallery({ isPreview = false }) {
     >
       {!isPreview && (
         <h2
-          className="text-4xl font-semibold mb-8 text-gray-800 text-center"
+          className="text-4xl mt-8 font-semibold mb-8 text-gray-800 text-center"
           style={{ paddingTop: '80px' }}
         >
           Our Work
@@ -54,7 +54,7 @@ export default function Gallery({ isPreview = false }) {
         {displayImages.map((image, index) => (
           <div
             key={index}
-            className="relative overflow-hidden rounded-lg shadow-lg aspect-square"
+            className="group relative overflow-hidden rounded-lg shadow-lg aspect-square"
             style={{ cursor: 'pointer' }}
           >
             {!loadedImages[index] && (
@@ -62,10 +62,11 @@ export default function Gallery({ isPreview = false }) {
                 <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
               </div>
             )}
+
             <img
               src={image}
               alt={`Gallery image ${index + 1}`}
-              className={`w-full h-full object-cover transition-transform duration-300 rounded-lg hover:scale-105 ${
+              className={`w-full h-full object-cover transform transition-transform duration-500 ease-in-out group-hover:scale-110 rounded-lg ${
                 loadedImages[index] ? 'opacity-100' : 'opacity-0'
               }`}
               onLoad={() => handleImageLoad(index)}
@@ -74,7 +75,7 @@ export default function Gallery({ isPreview = false }) {
                 e.target.src = 'https://via.placeholder.com/400x300?text=Image+Not+Found';
               }}
             />
-            <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-opacity duration-300 rounded-lg" />
+            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300 rounded-lg" />
           </div>
         ))}
       </div>
